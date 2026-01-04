@@ -1,0 +1,62 @@
+version: "3.9"
+
+services:
+  redis:
+    container_name: ${IO_REDIS_SERVER}
+    image: redis:7.2-alpine
+    restart: always
+    env_file:
+      - .env
+    command: redis-server --appendonly yes
+    ports:
+      - "${IO_REDIS_PORT}:6379"
+    volumes:
+      - ../.docker/.data/redis:/data
+
+  postgres:
+    container_name: ${POSTGRESQL_SERVER}
+    image: bitnami/postgresql:latest
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRESQL_USERNAME: ${POSTGRESQL_USER}
+      POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_DATABASE: ${POSTGRESQL_DATABASE}
+    ports:
+      - "${POSTGRESQL_PORT_NUMBER}:5432"
+    volumes:
+      - ${POSTGRESQL_VOLUME}:/bitnami/postgresql
+
+  rabbitmq:
+    container_name: ${RABBITMQ_SERVER}
+    image: rabbitmq:4.2-management
+    restart: always
+    env_file:
+      - .env
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    ports:
+      - "${RABBITMQ_PORT}:5672"
+      - "15672:15672"
+    volumes:
+      - ../.docker/.data/rabbitmq:/var/lib/rabbitmq
+
+  api:
+    container_name: ${PROJECT_NAME}
+    build:
+      context: ..
+      dockerfile: .docker/Dockerfile.dev
+    env_file:
+      - .env
+    working_dir: /app
+    volumes:
+      - ..:/app
+    ports:
+    - "${PORT}:8080"
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+
