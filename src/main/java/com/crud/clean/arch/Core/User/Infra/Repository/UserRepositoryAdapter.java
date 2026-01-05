@@ -11,21 +11,22 @@ import com.crud.clean.arch.Core.User.Application.DTO.Request.FilterUserRequestDt
 import com.crud.clean.arch.Core.User.Application.Mapper.UserMapper;
 import com.crud.clean.arch.Core.User.Domain.UserDomain;
 import com.crud.clean.arch.Core.User.Infra.Model.UserModel;
-import com.crud.clean.arch.Core.User.Infra.Repository.Interface.UserJpaRepository;
-import com.crud.clean.arch.Core.User.Infra.Repository.Interface.UserRepositoryAdapter;
+import com.crud.clean.arch.Core.User.Infra.Repository.Interface.UserJpaRepositoryInterface;
+import com.crud.clean.arch.Core.User.Infra.Repository.Interface.UserRepositoryAdapterInterface;
 
 @Repository
-public class UserRepository implements UserRepositoryAdapter {
+public class UserRepositoryAdapter implements UserRepositoryAdapterInterface {
 
-    private final UserJpaRepository jpa;
+    private final UserJpaRepositoryInterface jpa;
 
-    public UserRepository(UserJpaRepository jpa) {
+    public UserRepositoryAdapter(UserJpaRepositoryInterface jpa) {
         this.jpa = jpa;
     }
 
     @Override
     public UserDomain save(UserDomain usuario) {
         UserModel model = UserMapper.toModel(usuario);
+        System.out.println(model);
         UserModel saved = jpa.save(model);
         return UserMapper.toDomain(saved);
     }
@@ -73,6 +74,14 @@ public class UserRepository implements UserRepositoryAdapter {
                 .stream()
                 .map(UserMapper::toDomain)
                 .toList();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        if (!jpa.existsById(id)) {
+            throw new IllegalArgumentException("Usuário não encontrado");
+        }
+        jpa.deleteById(id);
     }
 
 }

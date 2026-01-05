@@ -8,15 +8,15 @@ import com.crud.clean.arch.Core.User.Application.DTO.Response.UserResponseDto;
 import com.crud.clean.arch.Core.User.Application.Mapper.UserMapper;
 import com.crud.clean.arch.Core.User.Domain.UserDomain;
 import com.crud.clean.arch.Core.User.Domain.Props.UserDomainProps;
-import com.crud.clean.arch.Core.User.Infra.Repository.UserRepository;
+import com.crud.clean.arch.Core.User.Infra.Repository.UserRepositoryAdapter;
 
 @Service
 public class InsertUserUsecase {
 
-    private final UserRepository usuarioRepository;
+    private final UserRepositoryAdapter usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public InsertUserUsecase(UserRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public InsertUserUsecase(UserRepositoryAdapter usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -33,7 +33,7 @@ public class InsertUserUsecase {
 
         UserDomainProps props = new UserDomainProps(
                 null,
-                dto.fist_name(),
+                dto.first_name(),
                 dto.last_name(),
                 dto.document_number(),
                 dto.email(),

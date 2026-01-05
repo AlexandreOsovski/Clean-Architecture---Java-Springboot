@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.crud.clean.arch.Core.User.Application.DTO.Request.FilterUserRequestDto;
 import com.crud.clean.arch.Core.User.Domain.UserDomain;
 
-public interface UserRepositoryAdapter {
+public interface UserRepositoryAdapterInterface {
 
     UserDomain save(UserDomain usuario);
 
@@ -17,5 +17,7 @@ public interface UserRepositoryAdapter {
     Optional<UserDomain> findByDocumentNumber(String numeroDocumento);
 
     List<UserDomain> findWhere(FilterUserRequestDto dto);
+
+    void deleteById(Long id);
 
 }

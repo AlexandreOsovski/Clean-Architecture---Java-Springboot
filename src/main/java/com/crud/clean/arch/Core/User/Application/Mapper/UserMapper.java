@@ -48,4 +48,5 @@ public class UserMapper {
                 domain.getCreatedAt(),
                 domain.getUpdatedAt());
     }
+
 }

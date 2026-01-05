@@ -7,53 +7,53 @@ import java.time.OffsetDateTime;
 
 public class UserDomain {
 
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String documentNumber;
-    private String email;
-    private String password;
-    private OffsetDateTime createdAt;
-    private OffsetDateTime updatedAt;
+    private Long _id;
+    private String _firstName;
+    private String _lastName;
+    private String _documentNumber;
+    private String _email;
+    private String _password;
+    private OffsetDateTime _createdAt;
+    private OffsetDateTime _updatedAt;
 
     public UserDomain(UserDomainProps props) {
         validate(props);
 
-        this.id = props.id();
-        this.firstName = props.firstName();
-        this.lastName = props.lastName();
-        this.documentNumber = props.documentNumber();
-        this.email = props.email();
-        this.password = props.password();
-        this.createdAt = props.createdAt();
-        this.updatedAt = props.updatedAt();
+        this._id = props.id();
+        this._firstName = props.firstName();
+        this._lastName = props.lastName();
+        this._documentNumber = props.documentNumber();
+        this._email = props.email();
+        this._password = props.password();
+        this._createdAt = props.createdAt();
+        this._updatedAt = props.updatedAt();
     }
 
     public UserDomain insert() {
         var now = OffsetDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
+        this._createdAt = now;
+        this._updatedAt = now;
         return this;
     }
 
     public UserDomain update(UserDomainProps props) {
 
         if (props.firstName() != null)
-            this.firstName = props.firstName();
+            this._firstName = props.firstName();
 
         if (props.lastName() != null)
-            this.lastName = props.lastName();
+            this._lastName = props.lastName();
 
         if (props.documentNumber() != null)
-            this.documentNumber = props.documentNumber();
+            this._documentNumber = props.documentNumber();
 
         if (props.email() != null)
-            this.email = props.email();
+            this._email = props.email();
 
         if (props.password() != null)
-            this.password = props.password();
+            this._password = props.password();
 
-        this.updatedAt = OffsetDateTime.now();
+        this._updatedAt = OffsetDateTime.now();
         return this;
     }
 
@@ -83,34 +83,34 @@ public class UserDomain {
     }
 
     public Long getId() {
-        return id;
+        return _id;
     }
 
     public String getFirstName() {
-        return firstName;
+        return _firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return _lastName;
     }
 
     public String getDocumentNumber() {
-        return documentNumber;
+        return _documentNumber;
     }
 
     public String getEmail() {
-        return email;
+        return _email;
     }
 
     public String getPassword() {
-        return password;
+        return _password;
     }
 
     public OffsetDateTime getCreatedAt() {
-        return createdAt;
+        return _createdAt;
     }
 
     public OffsetDateTime getUpdatedAt() {
-        return updatedAt;
+        return _updatedAt;
     }
 }
