@@ -7,7 +7,7 @@ import java.time.OffsetDateTime;
 
 public class UserDomain {
 
-    private Long _id;
+    private final Long _id;
     private String _firstName;
     private String _lastName;
     private String _documentNumber;
@@ -17,8 +17,6 @@ public class UserDomain {
     private OffsetDateTime _updatedAt;
 
     public UserDomain(UserDomainProps props) {
-        validate(props);
-
         this._id = props.id();
         this._firstName = props.firstName();
         this._lastName = props.lastName();
@@ -30,6 +28,7 @@ public class UserDomain {
     }
 
     public UserDomain insert() {
+        validateForInsert();
         var now = OffsetDateTime.now();
         this._createdAt = now;
         this._updatedAt = now;
@@ -37,6 +36,7 @@ public class UserDomain {
     }
 
     public UserDomain update(UserDomainProps props) {
+        validateForUpdate(props);
 
         if (props.firstName() != null)
             this._firstName = props.firstName();
@@ -57,60 +57,47 @@ public class UserDomain {
         return this;
     }
 
-    private void validate(UserDomainProps props) {
-
-        if (props.firstName() == null || props.firstName().isBlank()
-                || props.firstName().toLowerCase().equals("string")) {
+    private void validateForInsert() {
+        if (isBlankOrPlaceholder(_firstName))
             throw new DomainValidationException("First Name is required");
-        }
 
-        if (props.email() == null || props.email().isBlank() || props.email().toLowerCase().equals("string")) {
-            throw new DomainValidationException("Email is required");
-        }
-
-        if (props.lastName() == null || props.lastName().isBlank() || props.lastName().toLowerCase().equals("string")) {
+        if (isBlankOrPlaceholder(_lastName))
             throw new DomainValidationException("Last Name is required");
-        }
 
-        if (props.documentNumber() == null || props.documentNumber().isBlank()
-                || props.documentNumber().toLowerCase().equals("string")) {
+        if (isBlankOrPlaceholder(_documentNumber))
             throw new DomainValidationException("Document Number is required");
-        }
 
-        if (props.password() == null || props.password().isBlank()) {
-            throw new DomainValidationException("Password required");
-        }
+        if (isBlankOrPlaceholder(_email))
+            throw new DomainValidationException("Email is required");
+
+        if (_password == null || _password.isBlank())
+            throw new DomainValidationException("Password is required");
     }
 
-    public Long getId() {
-        return _id;
+    private void validateForUpdate(UserDomainProps props) {
+        if (props.email() != null && isBlankOrPlaceholder(props.email()))
+            throw new DomainValidationException("Invalid Email");
+
+        if (props.firstName() != null && isBlankOrPlaceholder(props.firstName()))
+            throw new DomainValidationException("Invalid First Name");
+
+        if (props.lastName() != null && isBlankOrPlaceholder(props.lastName()))
+            throw new DomainValidationException("Invalid Last Name");
+
+        if (props.documentNumber() != null && isBlankOrPlaceholder(props.documentNumber()))
+            throw new DomainValidationException("Invalid Document Number");
     }
 
-    public String getFirstName() {
-        return _firstName;
+    private boolean isBlankOrPlaceholder(String value) {
+        return value == null || value.isBlank() || value.equalsIgnoreCase("string");
     }
 
-    public String getLastName() {
-        return _lastName;
-    }
-
-    public String getDocumentNumber() {
-        return _documentNumber;
-    }
-
-    public String getEmail() {
-        return _email;
-    }
-
-    public String getPassword() {
-        return _password;
-    }
-
-    public OffsetDateTime getCreatedAt() {
-        return _createdAt;
-    }
-
-    public OffsetDateTime getUpdatedAt() {
-        return _updatedAt;
-    }
+    public Long getId() { return _id; }
+    public String getFirstName() { return _firstName; }
+    public String getLastName() { return _lastName; }
+    public String getDocumentNumber() { return _documentNumber; }
+    public String getEmail() { return _email; }
+    public String getPassword() { return _password; }
+    public OffsetDateTime getCreatedAt() { return _createdAt; }
+    public OffsetDateTime getUpdatedAt() { return _updatedAt; }
 }

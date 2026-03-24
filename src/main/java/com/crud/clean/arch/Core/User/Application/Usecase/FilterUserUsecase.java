@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import com.crud.clean.arch.Core.User.Application.DTO.Request.FilterUserRequestDto;
 import com.crud.clean.arch.Core.User.Application.DTO.Response.UserResponseDto;
 import com.crud.clean.arch.Core.User.Application.Mapper.UserMapper;
-import com.crud.clean.arch.Core.User.Infra.Repository.UserRepositoryAdapter;
+import com.crud.clean.arch.Core.User.Infra.Repository.Interface.UserRepositoryAdapterInterface;
 
 @Service
 public class FilterUserUsecase {
 
-    private final UserRepositoryAdapter userRepository;
+    private final UserRepositoryAdapterInterface userRepository;
 
-    public FilterUserUsecase(UserRepositoryAdapter userRepository) {
+    public FilterUserUsecase(UserRepositoryAdapterInterface userRepository) {
         this.userRepository = userRepository;
     }
 

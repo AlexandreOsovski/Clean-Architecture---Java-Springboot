@@ -33,5 +33,5 @@ build/
 .vscode/
 
 ### Docker ###
-.docker/.env
+.env
 .docker/.data

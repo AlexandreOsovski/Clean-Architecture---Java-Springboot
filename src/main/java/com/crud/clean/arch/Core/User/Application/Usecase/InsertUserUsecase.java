@@ -6,28 +6,30 @@ import org.springframework.stereotype.Service;
 import com.crud.clean.arch.Core.User.Application.DTO.Request.InsertUserRequestDto;
 import com.crud.clean.arch.Core.User.Application.DTO.Response.UserResponseDto;
 import com.crud.clean.arch.Core.User.Application.Mapper.UserMapper;
+import com.crud.clean.arch.Core.User.Application.Usecase.Port.InsertUserInputPort;
 import com.crud.clean.arch.Core.User.Domain.UserDomain;
 import com.crud.clean.arch.Core.User.Domain.Props.UserDomainProps;
-import com.crud.clean.arch.Core.User.Infra.Repository.UserRepositoryAdapter;
+import com.crud.clean.arch.Core.User.Infra.Repository.Interface.UserRepositoryAdapterInterface;
 
 @Service
-public class InsertUserUsecase {
+public class InsertUserUsecase implements InsertUserInputPort {
 
-    private final UserRepositoryAdapter usuarioRepository;
+    private final UserRepositoryAdapterInterface userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public InsertUserUsecase(UserRepositoryAdapter usuarioRepository, PasswordEncoder passwordEncoder) {
-        this.usuarioRepository = usuarioRepository;
+    public InsertUserUsecase(UserRepositoryAdapterInterface userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
     public UserResponseDto execute(InsertUserRequestDto dto) {
 
-        if (usuarioRepository.findByEmail(dto.email()).isPresent()) {
+        if (userRepository.findByEmail(dto.email()).isPresent()) {
             throw new IllegalArgumentException("Email já cadastrado");
         }
 
-        if (usuarioRepository.findByDocumentNumber(dto.document_number()).isPresent()) {
+        if (userRepository.findByDocumentNumber(dto.document_number()).isPresent()) {
             throw new IllegalArgumentException("Numero de documento já cadastrado");
         }
 
@@ -42,7 +44,7 @@ public class InsertUserUsecase {
                 null);
 
         UserDomain usuario = new UserDomain(props).insert();
-        UserDomain salvo = usuarioRepository.save(usuario);
+        UserDomain salvo = userRepository.save(usuario);
 
         return UserMapper.toResponse(salvo);
     }

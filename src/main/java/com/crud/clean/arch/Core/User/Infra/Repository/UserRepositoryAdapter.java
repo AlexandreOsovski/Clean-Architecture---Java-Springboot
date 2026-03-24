@@ -79,7 +79,7 @@ public class UserRepositoryAdapter implements UserRepositoryAdapterInterface {
     @Override
     public void deleteById(Long id) {
         if (!jpa.existsById(id)) {
-            throw new IllegalArgumentException("Usuário não encontrado");
+            throw new IllegalArgumentException("User not found");
         }
         jpa.deleteById(id);
     }

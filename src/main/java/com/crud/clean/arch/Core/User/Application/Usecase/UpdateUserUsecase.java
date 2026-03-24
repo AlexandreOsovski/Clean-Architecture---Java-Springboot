@@ -7,14 +7,14 @@ import com.crud.clean.arch.Core.User.Application.DTO.Response.UserResponseDto;
 import com.crud.clean.arch.Core.User.Application.Mapper.UserMapper;
 import com.crud.clean.arch.Core.User.Domain.UserDomain;
 import com.crud.clean.arch.Core.User.Domain.Props.UserDomainProps;
-import com.crud.clean.arch.Core.User.Infra.Repository.UserRepositoryAdapter;
+import com.crud.clean.arch.Core.User.Infra.Repository.Interface.UserRepositoryAdapterInterface;
 
 @Service
 public class UpdateUserUsecase {
 
-    private final UserRepositoryAdapter userRepository;
+    private final UserRepositoryAdapterInterface userRepository;
 
-    public UpdateUserUsecase(UserRepositoryAdapter userRepository) {
+    public UpdateUserUsecase(UserRepositoryAdapterInterface userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -29,7 +29,7 @@ public class UpdateUserUsecase {
                 dto.last_name(),
                 dto.document_number(),
                 dto.email(),
-                null,
+                dto.password(),
                 null,
                 null);
 

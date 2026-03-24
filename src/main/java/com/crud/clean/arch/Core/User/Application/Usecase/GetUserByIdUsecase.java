@@ -4,14 +4,14 @@ import org.springframework.stereotype.Service;
 
 import com.crud.clean.arch.Core.User.Application.DTO.Response.UserResponseDto;
 import com.crud.clean.arch.Core.User.Application.Mapper.UserMapper;
-import com.crud.clean.arch.Core.User.Infra.Repository.UserRepositoryAdapter;
+import com.crud.clean.arch.Core.User.Infra.Repository.Interface.UserRepositoryAdapterInterface;
 
 @Service
 public class GetUserByIdUsecase {
 
-    private final UserRepositoryAdapter userRepository;
+    private final UserRepositoryAdapterInterface userRepository;
 
-    public GetUserByIdUsecase(UserRepositoryAdapter userRepository) {
+    public GetUserByIdUsecase(UserRepositoryAdapterInterface userRepository) {
         this.userRepository = userRepository;
     }
 
